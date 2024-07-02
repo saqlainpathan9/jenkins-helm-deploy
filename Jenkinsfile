@@ -12,7 +12,7 @@ pipeline {
             }
         }
         stage('Copy Artifacts') {
-            steps{
+            steps {
                 sh 'pwd'
                 sh 'cp -r target/*.jar docker'
             }
@@ -26,8 +26,9 @@ pipeline {
             steps {
                 script {
                     def customImage = docker.build("saqlainpathan9/petclinic:${env.BUILD_NUMBER}", "./docker")
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS)
-                    customImage.push('latest')
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS) {
+                        customImage.push('latest')
+                    }
                 }
             }
         }
